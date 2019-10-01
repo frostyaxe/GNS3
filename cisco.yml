@@ -1,0 +1,19 @@
+---
+- hosts: all
+  name: "[ Cisco ]"
+  gather_facts: false
+  become: true
+  connection: local
+  tasks:
+       - name: "[ Show Run ]"
+         ios_command:
+           commands: 
+                   - show version | inc uptime
+                   - show ip interface brief
+                   - show ip route
+                   - show ip route bgp
+                  # - show ip ospf neighbour
+         register: output
+       - debug:
+              msg: "{{ output.stdout  }}"
+

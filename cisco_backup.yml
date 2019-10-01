@@ -1,0 +1,16 @@
+---
+- hosts: all
+  name: "[ Cisco Router Config Backup ]"
+  gather_facts: true
+  become: true
+  connection: local
+  tasks: 
+       - name: "[ Get Configuration Details  ]"
+         ios_command:
+                    commands:
+                            - show run
+         register: config
+       - name: "[ Copying Configuration In Local ]"
+         copy:
+             content: "{{ config.stdout[0] }}"
+             dest: "cisco_backup_{{ inventory_hostname }}.txt"
